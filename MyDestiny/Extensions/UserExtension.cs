@@ -1,17 +1,17 @@
 ﻿using MyDestiny.Models;
 
-namespace MyDestiny;
+namespace MyDestiny.Extensions;
 
-public class Helper
+// TODO: longdang - Add logic to calculate here
+
+public static class UserExtension
 {
-    // TODO: longdang - Add logic to calculate here
-
     /// <summary>
     /// ĐƯƠNG ĐỜI: TỔNG NGÀY THÁNG NĂM SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhDuongDoi(UserInfo userInfo)
+    public static int TinhDuongDoi(this UserInfo userInfo)
     {
         var ketQua = userInfo.TongCacSoCuaNgaySinh
                      + userInfo.TongCacSoCuaThangSinh
@@ -26,11 +26,11 @@ public class Helper
     /// <summary>
     /// SỨ MỆNH: TỔNG HỌ VÀ TÊN
     /// </summary>
-    /// <param name="hoVaTen"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhChiSoSuMenh(string hoVaTen)
+    public static int TinhChiSoSuMenh(this UserInfo userInfo)
     {
-        var danhSachCacChuAscii = hoVaTen.Split(" ").ToList();
+        var danhSachCacChuAscii = userInfo.HoVaTenAscii.Split(" ").ToList();
 
         var tongDiemCuaChu = new List<(string chu, int tong)>();
         foreach (var chu in danhSachCacChuAscii)
@@ -50,14 +50,14 @@ public class Helper
         return ketQua;
     }
 
-
     /// <summary>
     /// LIÊN KẾT: HIỆU ĐƯỜNG ĐỜI VÀ SỨ MỆNH
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="duongDoi"></param>
     /// <param name="suMenh"></param>
     /// <returns></returns>
-    public static int TinhChiSoLienKetDuongDoiVaSuMenh(int duongDoi, int suMenh)
+    public static int TinhChiSoLienKetDuongDoiVaSuMenh(this UserInfo userInfo, int duongDoi, int suMenh)
     {
         return Math.Abs(suMenh - duongDoi);
     }
@@ -65,14 +65,15 @@ public class Helper
     /// <summary>
     /// TRƯỞNG THÀNH: TỔNG ĐƯỜNG ĐỜI VÀ SỨ MỆNH
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="duongDoi"></param>
     /// <param name="suMenh"></param>
     /// <returns></returns>
-    public static int TinhChiSoTruongThanh(int duongDoi, int suMenh)
+    public static int TinhChiSoTruongThanh(this UserInfo userInfo, int duongDoi, int suMenh)
     {
         return Math.Abs(suMenh + duongDoi);
     }
-
+    
     // 4. LINH HỒN: TỔNG NGUYÊN ÂM
     // 5. NHÂN CÁCH: TỔNG PHỤ ÂM
     // 6. LIÊN KẾT: HIỆU LINH HỒN VÀ NHÂN CÁCH
@@ -80,11 +81,11 @@ public class Helper
     /// <summary>
     /// CÂN BẰNG: TỔNG CÁC CHỮ CÁI ĐẦU TIÊN CỦA HỌ VÀ TÊN
     /// </summary>
-    /// <param name="hoVaTen"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhChiSoCanBang(string hoVaTen)
+    public static int TinhChiSoCanBang(this UserInfo userInfo)
     {
-        var danhSachChuCaiDau = hoVaTen
+        var danhSachChuCaiDau = userInfo.HoVaTenAscii
             .Split(" ")
             .Select(x => x[0].ToString())
             .ToList();
@@ -107,7 +108,7 @@ public class Helper
     /// </summary>
     /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhNamCaNhan(UserInfo userInfo)
+    public static int TinhNamCaNhan(this UserInfo userInfo)
     {
         var tongNgaySinh = userInfo.TongCacSoCuaNgaySinh;
         var tongThangSinh = userInfo.TongCacSoCuaThangSinh;
@@ -123,9 +124,10 @@ public class Helper
     /// <summary>
     /// THÁNG CÁ NHÂN: TỔNG NĂM CÁ NHÂN VỚI THÁNG HIỆN TẠI
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="namCaNhan"></param>
     /// <returns></returns>
-    public static int TinhThangCaNhan(int namCaNhan)
+    public static int TinhThangCaNhan(this UserInfo userInfo, int namCaNhan)
     {
         var thangHienTai = DateTime.Now.Month;
 
@@ -140,9 +142,10 @@ public class Helper
     /// <summary>
     /// NGÀY CÁ NHÂN: TỔNG THÁNG CÁ NHÂN VỚI NGÀY HIỆN TẠI
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="thangCaNhan"></param>
     /// <returns></returns>
-    public static int TinhNgayCaNhan(int thangCaNhan)
+    public static int TinhNgayCaNhan(this UserInfo userInfo, int thangCaNhan)
     {
         var ngayHienTai = DateTime.Now.Day;
 
@@ -157,11 +160,11 @@ public class Helper
     /// <summary>
     /// CHẶNG 1: TỔNG NGÀY SINH VỚI THÁNG SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhChang1(DateOnly ngayThangNamSinh)
+    public static int TinhChang1(this UserInfo userInfo)
     {
-        var tong = ngayThangNamSinh.Day + ngayThangNamSinh.Month;
+        var tong = userInfo.TongCacSoCuaNgaySinh + userInfo.TongCacSoCuaThangSinh;
 
         while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
             tong = Utils.TongCacChuSo(tong);
@@ -172,11 +175,11 @@ public class Helper
     /// <summary>
     /// CHẶNG 2: TỔNG NGÀY SINH VỚI NĂM SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhChang2(DateOnly ngayThangNamSinh)
+    public static int TinhChang2(this UserInfo userInfo)
     {
-        var tong = ngayThangNamSinh.Day + ngayThangNamSinh.Year;
+        var tong = userInfo.TongCacSoCuaNgaySinh + userInfo.TongCacSoCuaNamSinh;
 
         while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
             tong = Utils.TongCacChuSo(tong);
@@ -187,10 +190,11 @@ public class Helper
     /// <summary>
     /// CHĂNG 3: TỔNG CHẶNG 1 VÀ CHẶNG 2
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="chang1"></param>
     /// <param name="chang2"></param>
     /// <returns></returns>
-    public static int TinhChang3(int chang1, int chang2)
+    public static int TinhChang3(this UserInfo userInfo, int chang1, int chang2)
     {
         var tong = chang1 + chang2;
 
@@ -203,11 +207,11 @@ public class Helper
     /// <summary>
     /// CHẶNG 4: TỔNG THÁNG SINH VỚI NĂM SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhChang4(DateOnly ngayThangNamSinh)
+    public static int TinhChang4(this UserInfo userInfo)
     {
-        var tong = ngayThangNamSinh.Month + ngayThangNamSinh.Year;
+        var tong = userInfo.TongCacSoCuaThangSinh + userInfo.TongCacSoCuaNamSinh;
 
         while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
             tong = Utils.TongCacChuSo(tong);
@@ -215,15 +219,14 @@ public class Helper
         return tong;
     }
 
-
     /// <summary>
     /// THÁCH THỨC 1: HIỆU NGÀY SINH VỚI THÁNG SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhThachThuc1(DateOnly ngayThangNamSinh)
+    public static int TinhThachThuc1(this UserInfo userInfo)
     {
-        var hieu = Math.Abs(ngayThangNamSinh.Day - ngayThangNamSinh.Month);
+        var hieu = Math.Abs(userInfo.TongCacSoCuaNgaySinh - userInfo.TongCacSoCuaThangSinh);
 
         while (hieu >= 10 && !Utils.KiemTraTapBasic(hieu))
             hieu = Utils.TongCacChuSo(hieu);
@@ -234,11 +237,11 @@ public class Helper
     /// <summary>
     /// THÁCH THỨC 2: HIỆU NGÀY SINH VỚI NĂM SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhThachThuc2(DateOnly ngayThangNamSinh)
+    public static int TinhThachThuc2(this UserInfo userInfo)
     {
-        var hieu = Math.Abs(ngayThangNamSinh.Day - ngayThangNamSinh.Year);
+        var hieu = Math.Abs(userInfo.TongCacSoCuaNgaySinh - userInfo.TongCacSoCuaNamSinh);
 
         while (hieu >= 10 && !Utils.KiemTraTapBasic(hieu))
             hieu = Utils.TongCacChuSo(hieu);
@@ -249,10 +252,11 @@ public class Helper
     /// <summary>
     /// THÁCH THỨC 3: HIỆU THÁCH THỨC 1 VỚI THÁCH THỨC 2
     /// </summary>
+    /// <param name="userInfo"></param>
     /// <param name="thachThuc1"></param>
     /// <param name="thachThuc2"></param>
     /// <returns></returns>
-    public static int TinhThachThuc3(int thachThuc1, int thachThuc2)
+    public static int TinhThachThuc3(this UserInfo userInfo, int thachThuc1, int thachThuc2)
     {
         var hieu = Math.Abs(thachThuc1 - thachThuc2);
 
@@ -265,11 +269,11 @@ public class Helper
     /// <summary>
     /// THÁCH THỨC 4: HIỆU CỦA THÁNG SINH VỚI NĂM SINH
     /// </summary>
-    /// <param name="ngayThangNamSinh"></param>
+    /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static int TinhThachThuc4(DateOnly ngayThangNamSinh)
+    public static int TinhThachThuc4(this UserInfo userInfo)
     {
-        var hieu = Math.Abs(ngayThangNamSinh.Month - ngayThangNamSinh.Year);
+        var hieu = Math.Abs(userInfo.TongCacSoCuaThangSinh - userInfo.TongCacSoCuaNamSinh);
 
         while (hieu >= 10 && !Utils.KiemTraTapBasic(hieu))
             hieu = Utils.TongCacChuSo(hieu);

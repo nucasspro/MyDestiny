@@ -1,52 +1,36 @@
 ﻿@page "/myDestinyPage"
 @using global::MyDestiny.Models
+@using MyDestiny.Extensions
 
 <PageTitle>My Destiny</PageTitle>
 
 @* <MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText> *@
-@if (chiSoDuongDoi == 0)
+@if (!IsAllDone)
 {
     <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
 }
 else
 {
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số đường đời: @chiSoDuongDoi</MudText>
-}
-
-@if (chiSoSuMenh == 0)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
-}
-else
-{
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số sứ mệnh: @chiSoSuMenh</MudText> 
-}
-
-@if (chiSoLienKetDuongDoiVaSuMenh == 0)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
-}
-else
-{
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số liên kết đường đời và sứ mệnh: @chiSoLienKetDuongDoiVaSuMenh</MudText> 
-}
-
-@if (chiSoTruongThanh == 0)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
-}
-else
-{
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số trưởng thành: @chiSoTruongThanh</MudText> 
-}
-
-@if (chiSoCanBang == 0)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
-}
-else
-{
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số cân bằng: @chiSoCanBang</MudText> 
+    
+    
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số năm cá nhân: @chiSoNamCaNhan</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số tháng cá nhân: @chiSoThangCaNhan</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số ngày cá nhân: @chiSoNgayCaNhan</MudText> 
+    
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 1: @chiSoChang1</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 2: @chiSoChang2</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 3: @chiSoChang3</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 4: @chiSoChang4</MudText> 
+    
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 1: @chiSoThachThuc1</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 2: @chiSoThachThuc2</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 3: @chiSoThachThuc3</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 4: @chiSoThachThuc4</MudText> 
 }
     
 @code {
@@ -57,19 +41,52 @@ else
         NgayThangNamSinh = new DateOnly(1984, 3, 12),
     };
 
+    private bool IsAllDone = false;
+
     private int chiSoDuongDoi;
     private int chiSoSuMenh;
     private int chiSoLienKetDuongDoiVaSuMenh;
     private int chiSoTruongThanh;
     private int chiSoCanBang;
 
+    private int chiSoNamCaNhan;
+    private int chiSoThangCaNhan;
+    private int chiSoNgayCaNhan;
+    
+    
+    private int chiSoChang1;
+    private int chiSoChang2;
+    private int chiSoChang3;
+    private int chiSoChang4;
+    
+    private int chiSoThachThuc1;
+    private int chiSoThachThuc2;
+    private int chiSoThachThuc3;
+    private int chiSoThachThuc4;
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(1000);
-        chiSoDuongDoi = Helper.TinhDuongDoi(_userInfo);
-        chiSoSuMenh = Helper.TinhChiSoSuMenh(_userInfo.HoVaTenAscii);
-        chiSoLienKetDuongDoiVaSuMenh = Helper.TinhChiSoLienKetDuongDoiVaSuMenh(chiSoDuongDoi, chiSoSuMenh);
-        chiSoTruongThanh = Helper.TinhChiSoTruongThanh(chiSoDuongDoi, chiSoSuMenh);
-        chiSoCanBang = Helper.TinhChiSoCanBang(_userInfo.HoVaTen);
+        chiSoDuongDoi = _userInfo.TinhDuongDoi();
+        chiSoSuMenh = _userInfo.TinhChiSoSuMenh();
+        chiSoLienKetDuongDoiVaSuMenh = _userInfo.TinhChiSoLienKetDuongDoiVaSuMenh(chiSoDuongDoi, chiSoSuMenh);
+        chiSoTruongThanh = _userInfo.TinhChiSoTruongThanh(chiSoDuongDoi, chiSoSuMenh);
+        chiSoCanBang = _userInfo.TinhChiSoCanBang();
+
+        chiSoNamCaNhan = _userInfo.TinhNamCaNhan();
+        chiSoThangCaNhan = _userInfo.TinhThangCaNhan(chiSoNamCaNhan);
+        chiSoNgayCaNhan = _userInfo.TinhNgayCaNhan(chiSoThangCaNhan);
+        
+        chiSoChang1 = _userInfo.TinhChang1();
+        chiSoChang2 = _userInfo.TinhChang2();
+        chiSoChang3 = _userInfo.TinhChang3(chiSoChang1, chiSoChang2);
+        chiSoChang4 = _userInfo.TinhChang4();
+
+        chiSoThachThuc1 = _userInfo.TinhThachThuc1();
+        chiSoThachThuc2 = _userInfo.TinhThachThuc2();
+        chiSoThachThuc3 = _userInfo.TinhThachThuc3(chiSoThachThuc1, chiSoThachThuc2);
+        chiSoThachThuc4 = _userInfo.TinhThachThuc4();
+        
+        IsAllDone = true;
     }
 }
