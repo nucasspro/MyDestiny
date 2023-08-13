@@ -1,0 +1,75 @@
+﻿@page "/myDestinyPage"
+@using global::MyDestiny.Models
+
+<PageTitle>My Destiny</PageTitle>
+
+@* <MudText Typo="Typo.h3" GutterBottom="true">Weather forecast</MudText> *@
+@if (chiSoDuongDoi == 0)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số đường đời: @chiSoDuongDoi</MudText>
+}
+
+@if (chiSoSuMenh == 0)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số sứ mệnh: @chiSoSuMenh</MudText> 
+}
+
+@if (chiSoLienKetDuongDoiVaSuMenh == 0)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số liên kết đường đời và sứ mệnh: @chiSoLienKetDuongDoiVaSuMenh</MudText> 
+}
+
+@if (chiSoTruongThanh == 0)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số trưởng thành: @chiSoTruongThanh</MudText> 
+}
+
+@if (chiSoCanBang == 0)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+}
+else
+{
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số cân bằng: @chiSoCanBang</MudText> 
+}
+    
+@code {
+
+    private UserInfo _userInfo = new()
+    {
+        HoVaTen = "Nguyễn Văn Linh",
+        NgayThangNamSinh = new DateOnly(1984, 3, 12),
+    };
+
+    private int chiSoDuongDoi;
+    private int chiSoSuMenh;
+    private int chiSoLienKetDuongDoiVaSuMenh;
+    private int chiSoTruongThanh;
+    private int chiSoCanBang;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        chiSoDuongDoi = Helper.TinhDuongDoi(_userInfo);
+        chiSoSuMenh = Helper.TinhChiSoSuMenh(_userInfo.HoVaTenAscii);
+        chiSoLienKetDuongDoiVaSuMenh = Helper.TinhChiSoLienKetDuongDoiVaSuMenh(chiSoDuongDoi, chiSoSuMenh);
+        chiSoTruongThanh = Helper.TinhChiSoTruongThanh(chiSoDuongDoi, chiSoSuMenh);
+        chiSoCanBang = Helper.TinhChiSoCanBang(_userInfo.HoVaTen);
+    }
+}
