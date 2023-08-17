@@ -6,7 +6,7 @@ public record UserInfo
 
     public DateOnly NgayThangNamSinh { get; init; }
 
-    public string HoVaTenAscii => Utils.ConvertToAscii(HoVaTen);
+    public string HoVaTenAscii => Utils.ChuyenSangAscii(HoVaTen);
 
     public int TongCacSoCuaNgaySinh => Utils.KiemTraTapBasic(NgayThangNamSinh.Day) ? NgayThangNamSinh.Day : Utils.TongCacChuSo(NgayThangNamSinh.Day);
 

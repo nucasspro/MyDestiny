@@ -35,7 +35,7 @@ public static class UserExtension
         var tongDiemCuaChu = new List<(string chu, int tong)>();
         foreach (var chu in danhSachCacChuAscii)
         {
-            var tong = chu.Sum(x => Utils.GetNumberFromCharacter(x.ToString()));
+            var tong = chu.Sum(x => Utils.ChuyenChuCaiThanhSo(x.ToString()));
 
             while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
                 tong = Utils.TongCacChuSo(tong);
@@ -76,7 +76,19 @@ public static class UserExtension
     
     // 4. LINH HỒN: TỔNG NGUYÊN ÂM
     // 5. NHÂN CÁCH: TỔNG PHỤ ÂM
-    // 6. LIÊN KẾT: HIỆU LINH HỒN VÀ NHÂN CÁCH
+    
+    
+    /// <summary>
+    /// LIÊN KẾT: HIỆU LINH HỒN VÀ NHÂN CÁCH
+    /// </summary>
+    /// <param name="userInfo"></param>
+    /// <param name="linhHon"></param>
+    /// <param name="nhanCach"></param>
+    /// <returns></returns>
+    public static int TinhChiSoLienKet(this UserInfo userInfo, int linhHon, int nhanCach)
+    {
+        return Math.Abs(linhHon - nhanCach);
+    }
 
     /// <summary>
     /// CÂN BẰNG: TỔNG CÁC CHỮ CÁI ĐẦU TIÊN CỦA HỌ VÀ TÊN
@@ -90,18 +102,98 @@ public static class UserExtension
             .Select(x => x[0].ToString())
             .ToList();
 
-        var tong = danhSachChuCaiDau.Sum(Utils.GetNumberFromCharacter);
+        var tong = danhSachChuCaiDau.Sum(Utils.ChuyenChuCaiThanhSo);
         while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
             tong = Utils.TongCacChuSo(tong);
 
         return tong;
     }
 
+    /// <summary>
+    /// TƯ DUY LÝ TRÍ: TÊN + NGÀY SINH
+    /// </summary>
+    /// <param name="userInfo"></param>
+    /// <returns></returns>
+    public static int TinhChiSoTuDuyLyTri(this UserInfo userInfo)
+    {
+        var ten = userInfo.HoVaTenAscii.Split(" ").Last();
+        var tongTen = ten.Sum(x => Utils.ChuyenChuCaiThanhSo(x.ToString()));
 
-    // 8. TƯ DUY LÝ TRÍ: TÊN + NGÀY SINH
-    // 9. SỨC MẠNH TIỀM THỨC: 9- SỐ LƯỢNG SỐ THIẾU
-    // 10. NGÀY SINH: TỔNG NGÀY SINH
-    // 11. ĐAM MÊ: CÁC SỐ LẶP LẠI NHIỀU TRÊN HỌ VÀ TÊN
+        var tong = tongTen + userInfo.TongCacSoCuaNgaySinh;
+
+        while (tong >= 10 && !Utils.KiemTraTapBasic(tong))
+            tong = Utils.TongCacChuSo(tong);
+
+        return tong;
+    }
+    
+    /// <summary>
+    /// SỨC MẠNH TIỀM THỨC: 9- SỐ LƯỢNG SỐ THIẾU
+    /// </summary>
+    /// <param name="userInfo"></param>
+    /// <returns></returns>
+    public static int TinhChiSoSucManhTiemThuc(this UserInfo userInfo)
+    {
+        var numberFromCharacter = new HashSet<int>();
+        
+        var danhSachCacChuAscii = userInfo.HoVaTenAscii.Split(" ").ToList();
+        foreach (var chu in danhSachCacChuAscii)
+        {
+            foreach (var number in chu.Select(chuCai => Utils.ChuyenChuCaiThanhSo(chuCai.ToString())))
+            {
+                numberFromCharacter.Add(number);
+            }
+        }
+        
+        var soLuongSoThieu = Utils.KhongTrongTapSoNguyen(numberFromCharacter);
+        var sucManhTiemThuc = 9 - soLuongSoThieu.Count;
+        return sucManhTiemThuc;
+    }
+    
+    /// <summary>
+    /// ĐAM MÊ: CÁC SỐ LẶP LẠI NHIỀU TRÊN HỌ VÀ TÊN
+    /// </summary>
+    /// <param name="userInfo"></param>
+    /// <returns></returns>
+    public static IEnumerable<int> TinhChiSoDamMe(this UserInfo userInfo)
+    {
+        var danhSachCacSo = new Dictionary<int, int>();
+        
+        var danhSachCacChuAscii = userInfo.HoVaTenAscii.Split(" ").ToList();
+        foreach (var so in danhSachCacChuAscii.SelectMany(chu => chu.Select(chuCai => Utils.ChuyenChuCaiThanhSo(chuCai.ToString()))))
+        {
+            if (danhSachCacSo.ContainsKey(so))
+                danhSachCacSo[so]++;
+            else
+                danhSachCacSo.Add(so, 1);
+        }
+        
+        var giaTriLonNhat = danhSachCacSo.Values.Max();
+        var danhSachSoLapLaiNhieuNhat = danhSachCacSo.Where(kv => kv.Value == giaTriLonNhat).Select(kv => kv.Key).ToList();
+        return danhSachSoLapLaiNhieuNhat;
+    }
+    
+    /// <summary>
+    /// CHỈ SỐ THIẾU: LÀ CÁC SỐ KHÔNG XUẤT HIỆN TRÊN HỌ VÀ TÊN
+    /// </summary>
+    /// <param name="userInfo"></param>
+    /// <returns></returns>
+    public static IEnumerable<int> TinhChiSoThieu(this UserInfo userInfo)
+    {
+        var numberFromCharacter = new HashSet<int>();
+        
+        var danhSachCacChuAscii = userInfo.HoVaTenAscii.Split(" ").ToList();
+        foreach (var chu in danhSachCacChuAscii)
+        {
+            foreach (var number in chu.Select(chuCai => Utils.ChuyenChuCaiThanhSo(chuCai.ToString())))
+            {
+                numberFromCharacter.Add(number);
+            }
+        }
+        
+        var soLuongSoThieu = Utils.KhongTrongTapSoNguyen(numberFromCharacter);
+        return soLuongSoThieu;
+    }
 
     /// <summary>
     /// NĂM CÁ NHÂN: TỔNG NGÀY THÁNG SINH VỚI NĂM HIỆN TẠI

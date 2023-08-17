@@ -4,7 +4,15 @@ namespace MyDestiny;
 
 public static class Utils
 {
-    private static readonly List<int> TapBasic = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33 };
+    private static readonly List<int> TapSoNguyen = new()
+    {
+        1, 2, 3, 4, 5, 6, 7, 8, 9
+    };
+
+    private static readonly List<int> TapBasic = new()
+    {
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33
+    };
 
     private static readonly IReadOnlyDictionary<int, List<string>> NumberToCharacterMapping = new Dictionary<int, List<string>>
     {
@@ -19,7 +27,14 @@ public static class Utils
         { 9, new List<string> { "I", "R" } }
     };
 
+    private static readonly IReadOnlyList<string> DanhSachNguyenAm = new List<string>
+    {
+        "U", "E", "O", "A", "I", "Y"
+    };
+
     public static bool KiemTraTapBasic(int source) => TapBasic.Contains(source);
+
+    public static List<int> KhongTrongTapSoNguyen(IReadOnlyCollection<int> source) => TapSoNguyen.Except(source).ToList();
 
     public static int TongCacChuSo(int source)
     {
@@ -34,27 +49,23 @@ public static class Utils
     }
 
 
-    public static string ConvertToAscii(string source)
+    public static string ChuyenSangAscii(string source)
     {
         var sb = new StringBuilder();
-        foreach (var character in source)
+        foreach (var asciiCharacter in source.Select(character => character.ToString().Normalize(NormalizationForm.FormD)[0]))
         {
-            var asciiCharacter = character.ToString().Normalize(NormalizationForm.FormD)[0];
             sb.Append(asciiCharacter);
         }
 
         return sb.ToString();
     }
 
-    public static int GetNumberFromCharacter(string character)
+    public static int ChuyenChuCaiThanhSo(string character)
     {
-        // Convert unicode character to ASCII character
         var result = NumberToCharacterMapping
             .First(x => x.Value.Contains(character.ToUpper()))
             .Key;
 
         return result;
-
-        // Special case: Y
     }
 }

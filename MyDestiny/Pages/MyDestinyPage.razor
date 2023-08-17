@@ -15,17 +15,35 @@ else
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số sứ mệnh: @chiSoSuMenh</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số liên kết đường đời và sứ mệnh: @chiSoLienKetDuongDoiVaSuMenh</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số trưởng thành: @chiSoTruongThanh</MudText> 
+    
+    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+    
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số linh hồn: @chiSoLinhHon</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số nhân cách: @chiSoNhanCach</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số liên kết: @chiSoLienKet</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số cân bằng: @chiSoCanBang</MudText> 
     
+    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+    
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số tư duy lý trí: @chiSoTuDuyLyTri</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số sức mạnh tiềm thức: @chiSoSucManhTiemThuc</MudText> 
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số đam mê: @chiSoDamMe</MudText>
+    <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thiếu: @chiSoThieu</MudText> 
+    
+    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
     
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số năm cá nhân: @chiSoNamCaNhan</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số tháng cá nhân: @chiSoThangCaNhan</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số ngày cá nhân: @chiSoNgayCaNhan</MudText> 
     
+    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+    
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 1: @chiSoChang1</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 2: @chiSoChang2</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 3: @chiSoChang3</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số chặng 4: @chiSoChang4</MudText> 
+    
+    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
     
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 1: @chiSoThachThuc1</MudText> 
     <MudText Typo="Typo.h3" GutterBottom="true">Chỉ số thách thức 2: @chiSoThachThuc2</MudText> 
@@ -38,7 +56,7 @@ else
     private UserInfo _userInfo = new()
     {
         HoVaTen = "Nguyễn Văn Linh",
-        NgayThangNamSinh = new DateOnly(1984, 3, 12),
+        NgayThangNamSinh = new DateOnly(1984, 3, 12)
     };
 
     private bool IsAllDone = false;
@@ -47,12 +65,20 @@ else
     private int chiSoSuMenh;
     private int chiSoLienKetDuongDoiVaSuMenh;
     private int chiSoTruongThanh;
+    
+    private int chiSoLinhHon;
+    private int chiSoNhanCach;
+    private int chiSoLienKet;
     private int chiSoCanBang;
+
+    private int chiSoTuDuyLyTri;
+    private int chiSoSucManhTiemThuc;
+    private string chiSoDamMe;
+    private string chiSoThieu;
 
     private int chiSoNamCaNhan;
     private int chiSoThangCaNhan;
     private int chiSoNgayCaNhan;
-    
     
     private int chiSoChang1;
     private int chiSoChang2;
@@ -71,7 +97,16 @@ else
         chiSoSuMenh = _userInfo.TinhChiSoSuMenh();
         chiSoLienKetDuongDoiVaSuMenh = _userInfo.TinhChiSoLienKetDuongDoiVaSuMenh(chiSoDuongDoi, chiSoSuMenh);
         chiSoTruongThanh = _userInfo.TinhChiSoTruongThanh(chiSoDuongDoi, chiSoSuMenh);
+
+        chiSoLinhHon = 0;
+        chiSoNhanCach = 0;
+        chiSoLienKet = _userInfo.TinhChiSoLienKet(chiSoLinhHon, chiSoNhanCach);
         chiSoCanBang = _userInfo.TinhChiSoCanBang();
+
+        chiSoTuDuyLyTri = _userInfo.TinhChiSoTuDuyLyTri();
+        chiSoSucManhTiemThuc = _userInfo.TinhChiSoSucManhTiemThuc();
+        chiSoDamMe = _userInfo.TinhChiSoDamMe().Aggregate("", (current, item) => current + (item + ", "));
+        chiSoThieu = _userInfo.TinhChiSoThieu().Aggregate("", (current, item) => current + (item + ", "));
 
         chiSoNamCaNhan = _userInfo.TinhNamCaNhan();
         chiSoThangCaNhan = _userInfo.TinhThangCaNhan(chiSoNamCaNhan);
