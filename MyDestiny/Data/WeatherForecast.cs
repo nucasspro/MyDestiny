@@ -1,4 +1,4 @@
-namespace MyDestiny2.Data
+namespace MyDestiny.Data
 {
     public class WeatherForecast
     {
