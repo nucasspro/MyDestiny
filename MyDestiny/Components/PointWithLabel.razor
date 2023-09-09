@@ -1,0 +1,49 @@
+@using global::MyDestiny.Models
+
+@switch (ViTri)
+{
+    case "left":
+        <div class="avatar-with-label" style="display: flex; flex-direction: row; align-items: center">
+            <div class="label" style="color: red;"><strong>@NoiDung</strong></div>
+            <MudSpacer />
+            <MudAvatar Color="@Color" Size="@Size.Large" Style="height:70px; width:70px; font-size:2rem;">@Diem</MudAvatar>
+        </div>
+        break;
+    case "right":
+        <div class="avatar-with-label" style="display: flex; flex-direction: row; align-items: center">
+            <MudAvatar Color="@Color" Size="@Size.Large" Style="height:70px; width:70px; font-size:2rem;">@Diem</MudAvatar>
+            <MudSpacer />
+            <div class="label" style="color: red;"><strong>@NoiDung</strong></div>
+        </div>
+        break;
+    case "top":
+        <div class="avatar-with-label" style="display: flex; flex-direction: column; align-items: center">
+            <MudAvatar Color="@Color" Size="@Size.Large" Style="height:70px; width:70px; font-size:2rem;">@Diem</MudAvatar>
+            <MudSpacer />
+            <div class="label" style="color: red;"><strong>@NoiDung</strong></div>
+        </div>
+        break; 
+    case "bottom":
+        <div class="avatar-with-label" style="display: flex; flex-direction: column; align-items: center">
+            <div class="label" style="color: red;"><strong>@NoiDung</strong></div>
+            <MudSpacer />
+            <MudAvatar Color="@Color" Size="@Size.Large" Style="height:70px; width:70px; font-size:2rem;">@Diem</MudAvatar>
+        </div>
+        break; 
+}
+
+
+@code {
+
+    [Parameter]
+    public string Diem { get; set; }
+
+    [Parameter]
+    public string ViTri { get; set; } = "left";
+
+    [Parameter]
+    public string NoiDung { get; set; }
+    
+    [Parameter]
+    public Color Color { get; set; }
+}
