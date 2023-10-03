@@ -25,7 +25,7 @@
 
 <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
 
-<MudPaper Class="pa-16 ma-2" Elevation="3">
+@* <MudPaper Class="pa-16 ma-2" Elevation="3">
 
     <div id="start">
     <PointWithLabel Diem="22" NoiDung="asd dsf" ViTri="left" Color="Color.Primary"/>
@@ -44,7 +44,7 @@
     </div>
 
 
-</MudPaper>
+</MudPaper> *@
 
 <MudPaper Class="pa-16 ma-2" Elevation="3">
     @if (_userInfo is null && !_isAllDone)
@@ -119,12 +119,12 @@
 
     
 
-    private string _userName = "a v";
-    private DateTime? _userBirthDay = DateTime.Today;
+    private string _userName = "Dang Nhat Hai Long";
+    private DateTime? _userBirthDay = DateTime.Today.AddYears(-10);
 
     private UserInfo? _userInfo;
 
-    private bool _isAllDone = false;
+    private bool _isAllDone = true;
 
     private int _chiSoSuMenh;
     private int _chiSoLienKetDuongDoiVaSuMenh;
