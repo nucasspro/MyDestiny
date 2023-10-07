@@ -16,6 +16,12 @@ public record UserInfo
 
     public int TongCacSoCuaNamSinh { get; init; }
 
+    public int TongCacSoCuaNgaySinhTrongTapBasis { get; init; }
+
+    public int TongCacSoCuaThangSinhTrongTapBasis { get; init; }
+
+    public int TongCacSoCuaNamSinhTrongTapBasis { get; init; }
+
     public UserDetails UserDetails { get; set; } = new();
 
     public UserInfo(string hoVaTen, DateTime ngayThangNamSinh)
@@ -25,9 +31,14 @@ public record UserInfo
 
         HoVaTenAscii = Utils.ChuyenSangAscii(HoVaTen);
         DanhSachCacChuTrongTenAscii = HoVaTenAscii.Split(" ").ToList();
+
         TongCacSoCuaNgaySinh = Utils.TongCacChuSo(NgayThangNamSinh.Day);
         TongCacSoCuaThangSinh = Utils.TongCacChuSo(NgayThangNamSinh.Month);
         TongCacSoCuaNamSinh = Utils.TongCacChuSo(NgayThangNamSinh.Year);
+
+        TongCacSoCuaNgaySinhTrongTapBasis = Utils.TinhTong(NgayThangNamSinh.Day, true);
+        TongCacSoCuaThangSinhTrongTapBasis = Utils.TinhTong(NgayThangNamSinh.Month, true);
+        TongCacSoCuaNamSinhTrongTapBasis = Utils.TinhTong(NgayThangNamSinh.Year, true);
     }
 }
 

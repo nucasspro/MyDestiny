@@ -3,6 +3,7 @@
 @using global::MyDestiny.Models
 @using MyDestiny.Extensions
 @using MyDestiny.Components
+@using System.Globalization
 
 @inject IJSRuntime JSRuntime
 
@@ -11,8 +12,8 @@
 <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
 
 <MudPaper Class="pa-16 ma-2" Elevation="3">
-    <MudTextField Label="Ho Va Ten" @bind-Value="_userName" Variant="Variant.Outlined"></MudTextField>
-    <MudDatePicker Label="Ngay thang nam sinh" Editable="true" @bind-Date="_userBirthDay" Placeholder="Chon ngay"/>
+    <MudTextField Label="Ho Va Ten" @bind-Value="_userName" Variant="Variant.Outlined" Clearable="true"></MudTextField>
+    <MudDatePicker Label="Ngay thang nam sinh" @bind-Date="_userBirthDay" Variant="Variant.Outlined" Placeholder="Chon ngay" Culture="@CultureInfo.GetCultureInfo("vi-VN")" TitleDateFormat="dddd, dd MMMM"/>
 
     <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
 
@@ -53,6 +54,13 @@
     }
     else
     {
+
+        /*
+            1) Home page se hien thi cac chi so cua nguoi dung dang card
+            2) Nhan vao card se nhay sang trang chi tiet
+        */
+        <Card/>
+
         <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số đường đời: @_userInfo?.UserDetails.ChiSoDuongDoi</MudText>
         <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số sứ mệnh: @_chiSoSuMenh</MudText>
         <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số liên kết đường đời và sứ mệnh: @_chiSoLienKetDuongDoiVaSuMenh</MudText>
@@ -117,10 +125,11 @@
 
     #region fields
 
-    
 
-    private string _userName = "Dang Nhat Hai Long";
-    private DateTime? _userBirthDay = DateTime.Today.AddYears(-10);
+
+    private string _userName = "ha nhan quoc long";
+    // private DateTime? _userBirthDay = DateTime.Today.AddYears(-10);
+    private DateTime? _userBirthDay = new DateTime(2002, 07, 11);
 
     private UserInfo? _userInfo;
 

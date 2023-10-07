@@ -11,9 +11,11 @@ public static class UserExtension
     /// <returns></returns>
     public static int TinhDuongDoi(this UserInfo userInfo)
     {
-        var ketQua = userInfo.TongCacSoCuaNgaySinh + userInfo.TongCacSoCuaThangSinh + userInfo.TongCacSoCuaNamSinh;
+        var ketQua = userInfo.TongCacSoCuaNgaySinhTrongTapBasis
+            + userInfo.TongCacSoCuaThangSinhTrongTapBasis
+            + userInfo.TongCacSoCuaNamSinhTrongTapBasis;
 
-        ketQua = Utils.TinhTong(ketQua, false);
+        ketQua = Utils.TinhTong(ketQua, true);
 
         return ketQua;
     }
@@ -126,7 +128,7 @@ public static class UserExtension
             tong += tongCacChuCaiPhuAm;
         }
 
-        tong = Utils.TinhTong(tong, true);
+        tong = Utils.TinhTong(tong, false);
 
         return tong;
     }
@@ -221,6 +223,7 @@ public static class UserExtension
         var danhSachSoLapLaiNhieuNhat = danhSachCacSo
             .Where(kv => kv.Value == giaTriLonNhat)
             .Select(kv => kv.Key)
+            .OrderBy(x => x)
             .ToList();
 
         return danhSachSoLapLaiNhieuNhat;
@@ -245,7 +248,7 @@ public static class UserExtension
         }
 
         var soLuongSoThieu = Utils.KhongTrongTapSoNguyen(numberFromCharacter);
-        return soLuongSoThieu;
+        return soLuongSoThieu.OrderBy(x => x);
     }
 
     /// <summary>
