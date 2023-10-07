@@ -4,7 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>MyDestiny_Prod</ActiveDebugProfile>
+    <ActiveDebugProfile>MyDestiny</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>D:\SiteJob\CoDao\MyDestiny\MyDestiny\Properties\PublishProfiles\MyDestiny - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

@@ -1,12 +1,63 @@
-﻿
+﻿@using System.Text;
+
+<div>
+    <MudText><b>@GetTitle()</b></MudText>
+
+    @if (Values is null)
+    {
+        <MudImage Fluid="true" Src="@GetImageUrl(Value)" Class="rounded-lg" />
+    }
+    else
+    {
+        <div class="flex flex-col gap-4">
+            @foreach (var value in Values)
+            {
+                <MudImage Fluid="true" Src="@GetImageUrl(value)" Class="rounded-lg" />
+            }
+        </div>
+    }
+
+</div>
 
 
-
-
-
-
-<h3>Card</h3>
 
 @code {
-    
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public int? Value { get; set; }
+
+    [Parameter]
+    public List<int> Values { get; set; }
+
+    private string GetImageUrl(int? number)
+    {
+        if (number == null)
+            return "https://picsum.photos/536/354";
+
+        if (number > 100)
+            return "https://picsum.photos/536/354";
+
+        return $"https://picsum.photos/536/354?image={number}";
+    }
+
+    private string GetTitle()
+    {
+        var title = new StringBuilder().Append(Title).Append(":");
+
+        if (Values is not null)
+        {
+            foreach (var value in Values)
+            {
+                title.Append(" ").Append(value).Append(",");
+            }
+        }
+        else
+        {
+            title.Append(" ").Append(Value);
+        }
+
+        return title.ToString();
+    }
 }

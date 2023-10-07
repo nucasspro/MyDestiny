@@ -9,22 +9,44 @@
 
 <PageTitle>My Destiny</PageTitle>
 
-<MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+<MudPaper Class="pa-16 ma-2 flex flex-row" Style="display: flex" Elevation="3">
+    @* left *@
+    <div class="flex-1">
+        <MudPaper Class="pa-8 ma-2 w-2/4" Elevation="3">
+            <div class="mb-8 flex items-center flex-col" style="display: flex">
+                <div class="flex items-center flex-row justify-center" style="display: flex">
+                    <MudText class="mr-2">Họ và tên</MudText>
+                    <MudTextField Immediate="true"
+                                  @bind-Value="@_hoVaTen"
+                                  Variant="Variant.Text"
+                                  Clearable="true"></MudTextField>
+                </div>
 
-<MudPaper Class="pa-16 ma-2" Elevation="3">
-    <MudTextField Label="Ho Va Ten" @bind-Value="_userName" Variant="Variant.Outlined" Clearable="true"></MudTextField>
-    <MudDatePicker Label="Ngay thang nam sinh" @bind-Date="_userBirthDay" Variant="Variant.Outlined" Placeholder="Chon ngay" Culture="@CultureInfo.GetCultureInfo("vi-VN")" TitleDateFormat="dddd, dd MMMM"/>
+                <div class="flex items-center flex-row" style="display: flex">
+                    <MudText class="mr-2">Ngày tháng năm sinh</MudText>
+                    <MudDatePicker @bind-Date="@_ngayThangNamSinh"
+                                   Variant="Variant.Text"
+                                   Culture="@CultureInfo.GetCultureInfo("vi-VN")"
+                                   TitleDateFormat="dddd, dd MMMM" />
+                </div>
+            </div>
 
-    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        </MudPaper>
 
-    <MudText Typo="Typo.h3" GutterBottom="true">Ho va Ten: @_userInfo?.HoVaTen</MudText>
-    <MudText Typo="Typo.h3" GutterBottom="true">Ngay thang nam sinh: @_userInfo?.NgayThangNamSinh.ToString("dd/MM/yyyy")</MudText>
+    </div>
 
-    <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
-    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@(TinhCacChiSo)">Tinh toan</MudButton>
-</MudPaper >
+    @* right *@
+    <div class="flex-1 flex-wrap">
+        <MudPaper Class="pa-16 ma-2 bg-blue-400 w-2/4" Elevation="3">
+            <MudText Typo="Typo.h3" GutterBottom="true">Ho va Ten: @_hoVaTen</MudText>
+            <MudText Typo="Typo.h3" GutterBottom="true">Ngay thang nam sinh: @_ngayThangNamSinh?.ToString("dd/MM/yyyy")</MudText>
+        </MudPaper>
+    </div>
 
-<MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+</MudPaper>
+@* <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@(TinhCacChiSo)">Tinh toan</MudButton> *@
+
+<MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
 @* <MudPaper Class="pa-16 ma-2" Elevation="3">
 
@@ -47,76 +69,93 @@
 
 </MudPaper> *@
 
-<MudPaper Class="pa-16 ma-2" Elevation="3">
+<MudPaper Elevation="0">
     @if (_userInfo is null && !_isAllDone)
     {
-        <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
+        <MudProgressCircular Color="Color.Default" Indeterminate="true" />
     }
     else
     {
 
         /*
-            1) Home page se hien thi cac chi so cua nguoi dung dang card
-            2) Nhan vao card se nhay sang trang chi tiet
+        1) Home page se hien thi cac chi so cua nguoi dung dang card
+        2) Nhan vao card se nhay sang trang chi tiet
         */
-        <Card/>
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số đường đời: @_userInfo?.UserDetails.ChiSoDuongDoi</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số sứ mệnh: @_chiSoSuMenh</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số liên kết đường đời và sứ mệnh: @_chiSoLienKetDuongDoiVaSuMenh</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số trưởng thành: @_chiSoTruongThanh</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số đường đời" Value="@_userInfo?.UserDetails.ChiSoDuongDoi" />
+            <Card Title="Chỉ số sứ mệnh" Value="@_chiSoSuMenh" />
+            <Card Title="Chỉ số liên kết đường đời và sứ mệnh" Value="@_chiSoLienKetDuongDoiVaSuMenh" />
+            <Card Title="Chỉ số trưởng thành" Value="@_chiSoTruongThanh" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số linh hồn: @_chiSoLinhHon</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số nhân cách: @_chiSoNhanCach</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số liên kết: @_chiSoLienKet</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số cân bằng: @_chiSoCanBang</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số linh hồn" Value="@_chiSoLinhHon" />
+            <Card Title="Chỉ số nhân cách" Value="@_chiSoNhanCach" />
+            <Card Title="Chỉ số liên kết" Value="@_chiSoLienKet" />
+            <Card Title="Chỉ số cân bằng" Value="@_chiSoCanBang" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tư duy lý trí: @_chiSoTuDuyLyTri</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số sức mạnh tiềm thức: @_chiSoSucManhTiemThuc</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số đam mê: @_chiSoDamMe</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số thiếu: @_chiSoThieu</MudText>
+        <div class="flex flex-row gap-4 grow-[1]" style="display:flex">
+            <Card Title="Chỉ số tư duy lý trí" Value="@_chiSoTuDuyLyTri" />
+            <Card Title="Chỉ số sức mạnh tiềm thức" Value="@_chiSoSucManhTiemThuc" />
+            <Card Title="Chỉ số đam mê" Values="@_chiSoDamMe" />
+            <Card Title="Chỉ số thiếu" Values="@_chiSoThieu" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số năm cá nhân: @_chiSoNamCaNhan</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tháng cá nhân: @_chiSoThangCaNhan</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số ngày cá nhân: @_chiSoNgayCaNhan</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số năm cá nhân" Value="@_chiSoNamCaNhan" />
+            <Card Title="Chỉ số tháng cá nhân" Value="@_chiSoThangCaNhan" />
+            <Card Title="Chỉ số ngày cá nhân" Value="@_chiSoNgayCaNhan" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số chặng 1: @_chiSoChang1</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số chặng 2: @_chiSoChang2</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số chặng 3: @_chiSoChang3</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số chặng 4: @_chiSoChang4</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số chặng 1" Value="@_chiSoChang1" />
+            <Card Title="Chỉ số chặng 2" Value="@_chiSoChang2" />
+            <Card Title="Chỉ số chặng 3" Value="@_chiSoChang3" />
+            <Card Title="Chỉ số chặng 4" Value="@_chiSoChang4" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tuoi chặng 1: @_chiSoTuoiChang1</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tuoi chặng 2: @_chiSoTuoiChang2</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tuoi chặng 3: @_chiSoTuoiChang3</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số tuoi chặng 4: @_chiSoTuoiChang4</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số tuổi chặng 1" Value="@_chiSoTuoiChang1" />
+            <Card Title="Chỉ số tuổi chặng 2" Value="@_chiSoTuoiChang2" />
+            <Card Title="Chỉ số tuổi chặng 3" Value="@_chiSoTuoiChang3" />
+            <Card Title="Chỉ số tuổi chặng 4" Value="@_chiSoTuoiChang4" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số nam chặng 1: @_chiSoNamChang1</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số nam chặng 2: @_chiSoNamChang2</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số nam chặng 3: @_chiSoNamChang3</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số nam chặng 4: @_chiSoNamChang4</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số năm chặng 1" Value="@_chiSoNamChang1" />
+            <Card Title="Chỉ số năm chặng 2" Value="@_chiSoNamChang2" />
+            <Card Title="Chỉ số năm chặng 3" Value="@_chiSoNamChang3" />
+            <Card Title="Chỉ số năm chặng 4" Value="@_chiSoNamChang4" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số thách thức 1: @_chiSoThachThuc1</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số thách thức 2: @_chiSoThachThuc2</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số thách thức 3: @_chiSoThachThuc3</MudText>
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ số thách thức 4: @_chiSoThachThuc4</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số thách thức 1" Value="@_chiSoThachThuc1" />
+            <Card Title="Chỉ số thách thức 2" Value="@_chiSoThachThuc2" />
+            <Card Title="Chỉ số thách thức 3" Value="@_chiSoThachThuc3" />
+            <Card Title="Chỉ số thách thức 4" Value="@_chiSoThachThuc4" />
+        </div>
 
-        <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+        <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
-        <MudText Typo="Typo.h4" GutterBottom="true">Chỉ so ngay sinh: @_chiSoNgaySinh</MudText>
+        <div class="flex flex-row gap-4" style="display: flex">
+            <Card Title="Chỉ số ngày sinh" Value="@_chiSoNgaySinh" />
+        </div>
     }
 
 </MudPaper>
@@ -127,9 +166,9 @@
 
 
 
-    private string _userName = "ha nhan quoc long";
+    private string _hoVaTen = "ha nhan quoc long";
     // private DateTime? _userBirthDay = DateTime.Today.AddYears(-10);
-    private DateTime? _userBirthDay = new DateTime(2002, 07, 11);
+    private DateTime? _ngayThangNamSinh = new DateTime(2002, 07, 11);
 
     private UserInfo? _userInfo;
 
@@ -146,8 +185,8 @@
 
     private int _chiSoTuDuyLyTri;
     private int _chiSoSucManhTiemThuc;
-    private string _chiSoDamMe;
-    private string _chiSoThieu;
+    private List<int> _chiSoDamMe;
+    private List<int> _chiSoThieu;
 
     private int _chiSoNamCaNhan;
     private int _chiSoThangCaNhan;
@@ -176,7 +215,7 @@
     private int _chiSoNgaySinh;
 
     #endregion
-    
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(1000);
@@ -186,7 +225,7 @@
     {
         _isAllDone = false;
 
-        _userInfo = new UserInfo(_userName, _userBirthDay!.Value);
+        _userInfo = new UserInfo(_hoVaTen, _ngayThangNamSinh!.Value);
 
         _userInfo.UserDetails.ChiSoDuongDoi = _userInfo.TinhDuongDoi();
         _chiSoSuMenh = _userInfo.TinhChiSoSuMenh();
@@ -200,8 +239,8 @@
 
         _chiSoTuDuyLyTri = _userInfo.TinhChiSoTuDuyLyTri();
         _chiSoSucManhTiemThuc = _userInfo.TinhChiSoSucManhTiemThuc();
-        _chiSoDamMe = _userInfo.TinhChiSoDamMe().Aggregate("", (current, item) => current + (item + ", "));
-        _chiSoThieu = _userInfo.TinhChiSoThieu().Aggregate("", (current, item) => current + (item + ", "));
+        _chiSoDamMe = _userInfo.TinhChiSoDamMe();
+        _chiSoThieu = _userInfo.TinhChiSoThieu();
 
         _chiSoNamCaNhan = _userInfo.TinhNamCaNhan();
         _chiSoThangCaNhan = _userInfo.TinhThangCaNhan(_chiSoNamCaNhan);
@@ -232,15 +271,22 @@
         _isAllDone = true;
 
 
-        
+
         //await CreateLeaderLine();
     }
-    
-    
+
+    private async Task NhapHoVaTen(ChangeEventArgs e)
+    {
+        // TODO: Validate input
+        // Get value from input
+        var value = e.Value;
+        Console.WriteLine(value);
+    }
+
     private async Task CreateLeaderLine()
     {
         await Task.Delay(10);
-        
+
         //await JSRuntime.InvokeVoidAsync("createLeaderLine",new [] { "start", "end" });
         var result = await JSRuntime.InvokeAsync<int>("sum", 5, 7);
         Console.WriteLine(result);

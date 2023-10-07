@@ -1,0 +1,10 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*Write global styles in the app.css file. You can also use the @import directive to import other CSS files.*/
+/*h1 {
+    @apply font-extrabold text-5xl;
+}
+*/
+

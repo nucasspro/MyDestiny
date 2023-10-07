@@ -206,7 +206,7 @@ public static class UserExtension
     /// </summary>
     /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static IEnumerable<int> TinhChiSoDamMe(this UserInfo userInfo)
+    public static List<int> TinhChiSoDamMe(this UserInfo userInfo)
     {
         var danhSachCacSo = new Dictionary<int, int>();
 
@@ -234,7 +234,7 @@ public static class UserExtension
     /// </summary>
     /// <param name="userInfo"></param>
     /// <returns></returns>
-    public static IEnumerable<int> TinhChiSoThieu(this UserInfo userInfo)
+    public static List<int> TinhChiSoThieu(this UserInfo userInfo)
     {
         var numberFromCharacter = new HashSet<int>();
 
@@ -248,7 +248,7 @@ public static class UserExtension
         }
 
         var soLuongSoThieu = Utils.KhongTrongTapSoNguyen(numberFromCharacter);
-        return soLuongSoThieu.OrderBy(x => x);
+        return soLuongSoThieu.OrderBy(x => x).ToList();
     }
 
     /// <summary>
